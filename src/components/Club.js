@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { convertToYards } from "../helpers/unitConversions";
 
 const getAverageInYards = (shots, key) => {
   const value = shots.reduce((acc, cur) => {
     return cur[key] ? acc + cur[key] : acc;
   }, 0);
-  return Math.round((value * 1.09361) / shots.length);
+  return Math.round(convertToYards(value) / shots.length);
 };
 
 function Club({ club }) {
@@ -13,11 +15,9 @@ function Club({ club }) {
   const [deviation, setDeviation] = useState(0);
 
   useEffect(() => {
-    if (club.shots.length > 0) {
-      setCarry(getAverageInYards(club.shots, "carryDistance"));
-      setTotal(getAverageInYards(club.shots, "totalDistance"));
-      setDeviation(getAverageInYards(club.shots, "carryDeviationDistance"));
-    }
+    setCarry(getAverageInYards(club.shots, "carryDistance"));
+    setTotal(getAverageInYards(club.shots, "totalDistance"));
+    setDeviation(getAverageInYards(club.shots, "carryDeviationDistance"));
   }, [club]);
 
   return (
@@ -27,6 +27,9 @@ function Club({ club }) {
         <span className="text-base font-medium">
           {club.shots.length} Total Shots
         </span>
+        <Link className="text-sm ml-4 text-blue-500" to={`/club/${club.name}`}>
+          View Details
+        </Link>
       </h3>
       <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
