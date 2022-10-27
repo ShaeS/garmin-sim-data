@@ -4,98 +4,15 @@ import CustomSelect from "../components/CustomSelect";
 import ShotTable from "../components/ShotTable";
 import ShotVisualizer from "../components/ShotVisualization";
 import useClubData from "../helpers/useClubData";
-
-const FIELDS = [
-  {
-    name: "Date",
-    id: "shotTime",
-  },
-  {
-    name: "Carry Distance",
-    id: "carryDistance",
-    convert: true,
-    units: "yds",
-  },
-  {
-    name: "Total Distance",
-    id: "totalDistance",
-    convert: true,
-    units: "yds",
-  },
-  {
-    name: "Total Deviation Distance",
-    id: "totalDeviationDistance",
-    convert: true,
-    units: "yds",
-  },
-  {
-    name: "Spin Rate",
-    id: "spinRate",
-    units: "rpm",
-  },
-  {
-    name: "Spin Axis",
-    id: "spinAxis",
-    units: "degrees",
-  },
-  {
-    name: "Apex Height",
-    id: "apexHeight",
-    convert: true,
-    units: "yds",
-  },
-  {
-    name: "Smash Factor",
-    id: "smashFactor",
-  },
-  {
-    name: "Ball Speed",
-    id: "ballSpeed",
-    convert: true,
-    units: "km/h",
-  },
-  {
-    name: "Swing Tempo",
-    id: "swingTempo",
-    units: "seconds",
-  },
-  {
-    name: "Club Head Speed",
-    id: "clubHeadSpeed",
-    convert: true,
-    units: "km/h",
-  },
-  {
-    name: "Club Face Angle",
-    id: "clubFaceAngle",
-    units: "degrees",
-  },
-  {
-    name: "Club Path Angle",
-    id: "clubPathAngle",
-    units: "degrees",
-  },
-  {
-    name: "Attack Angle",
-    id: "attackAngle",
-    units: "degrees",
-  },
-  {
-    name: "Horizontal Launch Angle",
-    id: "horizontalLaunchAngle",
-    units: "degrees",
-  },
-  {
-    name: "Vertical Launch Angle",
-    id: "verticalLaunchAngle",
-    units: "degrees",
-  },
-];
+import ShotChart from "../components/ShotChart";
+import { tableFields } from "../helpers/data";
+import { Link } from "react-router-dom";
+import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 
 function ClubDetails() {
   let params = useParams();
-  const [fields, setFields] = useState(FIELDS);
-  const [selectedShot, setSelectedShot] = useState(FIELDS);
+  const [fields, setFields] = useState(tableFields);
+  const [selectedShot, setSelectedShot] = useState(tableFields);
   const { clubArray } = useClubData();
   const [clubData, setClubData] = useState(null);
 
@@ -109,17 +26,17 @@ function ClubDetails() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-5xl mx-auto py-24">
-        <div className="flex">
+        <Link
+          className="inline-flex items-center mb-2 text-sm text-blue-500"
+          to="/"
+        >
+          <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+          Back to Clubs
+        </Link>
+        <h1 className="text-4xl font-bold mb-6">{params.club}</h1>
+        <div className="flex items-end">
           <div className="flex-1">
-            <h1 className="text-4xl font-bold mb-4">{params.club}</h1>
-
-            <div className="max-w-sm">
-              <CustomSelect
-                options={FIELDS}
-                selectedOptions={fields}
-                setSelectedOptions={setFields}
-              />
-            </div>
+            {clubData && <ShotChart shots={clubData.shots} />}
           </div>
           {clubData && (
             <ShotVisualizer
@@ -128,6 +45,16 @@ function ClubDetails() {
               setSelectedShot={setSelectedShot}
             />
           )}
+        </div>
+
+        <div className="mt-8 max-w-sm">
+          <CustomSelect
+            label="Filter Fields"
+            options={tableFields}
+            selectedOptions={fields}
+            setSelectedOptions={setFields}
+            multiple={true}
+          />
         </div>
 
         <div>

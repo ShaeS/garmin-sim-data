@@ -1,5 +1,3 @@
-import { convertToYards } from "../helpers/unitConversions";
-
 function ShotVisualizer({ shots, selectedShot, setSelectedShot }) {
   return (
     <div className="relative">
@@ -11,7 +9,7 @@ function ShotVisualizer({ shots, selectedShot, setSelectedShot }) {
       <span className="text-xs absolute top-[130px] right-full pr-1">300</span>
       <span className="text-xs absolute top-[75px] right-full pr-1">350</span>
       <div className="relative rounded w-[300px] h-[400px] border-2 border-green-700 bg-green-200 flex items-end justify-center overflow-hidden">
-        <div className="absolute bg-green-300 w-0.5 h-full"></div>
+        <div className="absolute border border-green-300 border-dashed w-px h-full"></div>
         <div className="absolute bg-green-600 w-1.5 h-1.5 rounded-full"></div>
         <div className="absolute border-2 top-full border-green-400 w-[100px] h-[100px] rounded-full translate-y-[-50px]"></div>
         <div className="absolute border-2 top-full border-green-400 w-[200px] h-[200px] rounded-full translate-y-[-100px]"></div>
@@ -29,9 +27,7 @@ function ShotVisualizer({ shots, selectedShot, setSelectedShot }) {
               }`}
               onClick={() => setSelectedShot(shotTime)}
               style={{
-                transform: `rotate(${totalDeviationAngle}deg) translateY(-${convertToYards(
-                  totalDistance
-                )}px)`,
+                transform: `rotate(${totalDeviationAngle}deg) translateY(-${totalDistance}px)`,
               }}
             ></div>
           );

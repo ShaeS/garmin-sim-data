@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { convertToYards } from "../helpers/unitConversions";
 
 const getAverageInYards = (shots, key) => {
   const value = shots.reduce((acc, cur) => {
     return cur[key] ? acc + cur[key] : acc;
   }, 0);
-  return Math.round(convertToYards(value) / shots.length);
+  return Math.round(value / shots.length);
 };
 
 function Club({ club }) {

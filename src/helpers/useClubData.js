@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { conversionData } from "./data";
+import { convertToKMH, convertToYards } from "./unitConversions";
 
 const useClubData = () => {
   const [sessions, setSessions] = useState(() => {
@@ -14,31 +16,30 @@ const useClubData = () => {
     return val ? JSON.parse(val) : null;
   });
 
-  useEffect(() => {
-    localStorage.setItem("garminSessions", JSON.stringify(sessions));
-  }, [sessions]);
-
-  useEffect(() => {
-    localStorage.setItem("garminClubs", JSON.stringify(clubs));
-  }, [clubs]);
-
-  useEffect(() => {
-    localStorage.setItem("garminType", JSON.stringify(clubTypes));
-  }, [clubTypes]);
-
   const [clubArray, setClubArray] = useState();
 
   useEffect(() => {
     if (sessions && clubs && clubTypes) {
-      const flatSessions = sessions.data.reduce((acc, cur) => {
+      const flatSessions = [...sessions.data].reduce((acc, cur) => {
         return acc.concat(cur.shots);
       }, []);
       const arr = clubs.data.map((club) => {
         const shots = flatSessions.filter((shot) => shot.clubId === club.id);
+        const convertedShots = [...shots].map((shot) => {
+          const obj = { ...shot };
+          Object.entries(conversionData).forEach(([key, val]) => {
+            if (val === "yds") {
+              obj[key] = Math.round(convertToYards(shot[key]));
+            } else if (val === "km/h") {
+              obj[key] = Math.round(convertToKMH(shot[key]));
+            }
+          });
+          return obj;
+        });
         return {
           ...club,
           name: clubTypes.data[club.clubTypeId].name,
-          shots,
+          shots: convertedShots,
         };
       });
       setClubArray(arr);

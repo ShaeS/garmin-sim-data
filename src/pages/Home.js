@@ -10,9 +10,21 @@ function Home() {
       <div className="max-w-5xl mx-auto py-24">
         <h1 className="text-4xl font-bold mb-4">Garmin Sim Sessions Data</h1>
         <div className="mb-12 grid grid-cols-3 gap-4">
-          <FileUploader label="Sessions" setter={setSessions} />
-          <FileUploader label="Clubs" setter={setClubs} />
-          <FileUploader label="Club Types" setter={setClubTypes} />
+          <FileUploader
+            label="Sessions"
+            setter={setSessions}
+            localKey="garminSessions"
+          />
+          <FileUploader
+            label="Clubs"
+            setter={setClubs}
+            localKey="garminClubs"
+          />
+          <FileUploader
+            label="Club Types"
+            setter={setClubTypes}
+            localKey="garminType"
+          />
         </div>
 
         <div>

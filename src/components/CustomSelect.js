@@ -10,21 +10,32 @@ export default function CustomSelect({
   options,
   selectedOptions,
   setSelectedOptions,
+  multiple,
+  label,
 }) {
   return (
-    <Listbox value={selectedOptions} onChange={setSelectedOptions} multiple>
+    <Listbox
+      value={selectedOptions}
+      onChange={setSelectedOptions}
+      multiple={multiple}
+    >
       {({ open }) => (
         <>
           <Listbox.Label className="block text-sm font-medium text-gray-700">
-            Filter Fields
+            {label}
           </Listbox.Label>
           <div className="relative mt-1">
             <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
-              <span className="block truncate">
-                {selectedOptions.length < 4
-                  ? selectedOptions.map((option) => option.name).join(", ")
-                  : `${selectedOptions.length} selected`}
-              </span>
+              {multiple && (
+                <span className="block truncate">
+                  {selectedOptions.length < 4
+                    ? selectedOptions.map((option) => option.name).join(", ")
+                    : `${selectedOptions.length} selected`}
+                </span>
+              )}
+              {!multiple && (
+                <span className="block truncate">{selectedOptions.name}</span>
+              )}
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon
                   className="h-5 w-5 text-gray-400"
